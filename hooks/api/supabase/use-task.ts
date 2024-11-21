@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabase";
 import { useToast } from "@/hooks/use-toast";
-import { Task } from "@/types";
+import { Board, Task } from "@/types";
 
 /** Supabase 내 todos 테이블 데이터 전체 조회 */
 function useGetTasks() {
@@ -59,12 +59,12 @@ function useUpdateTaskOneColumnById(id: number, column: string, value: any) {
 
     const fetchApi = async () => {
         try {
-            const { status, error } = await supabase
+            const { data, status, error } = await supabase
                 .from("todos")
                 .update({ [column]: value })
                 .eq("id", Number(id));
 
-            if (status === 204) {
+            if (data !== null && status === 204) {
                 toast({
                     title: "새로운 TODO-BOARD가 생성되었습니다.",
                     description: "생성한 TODO-BOARD를 예쁘게 꾸며주세요.",
@@ -87,8 +87,39 @@ function useUpdateTaskOneColumnById(id: number, column: string, value: any) {
     useEffect(() => {
         fetchApi();
     }, [id, column, value]);
-
-    return fetchApi; // fetchApi 함수 반환
 }
 
-export { useGetTasks, useGetTaskById, useUpdateTaskOneColumnById };
+/** Supabse 내 todos 데이블 데이터 중 특정 id 값의 개별 board 삭제 */
+function useDeleteBoard(id: number, column: string) {
+    const { toast } = useToast();
+    const fetchApi = async () => {
+        try {
+            const task = useGetTaskById(id);
+
+            if (task !== undefined) {
+                const { status } = await supabase
+                    .from("todos")
+                    .update({
+                        [column]: task.boards.filter((board: Board) => board.id !== id),
+                    })
+                    .eq("id", Number(id));
+                if (status === 204) {
+                    toast({
+                        title: "선택하신 TODO-BOARD가 삭제되었습니다.",
+                        description: "새로운 TODO-BOARD를 생성하려면 'Add New Board' 버튼을 눌러주세요!",
+                    });
+                }
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    useEffect(() => {
+        fetchApi();
+    }, []);
+
+    return { fetchApi };
+}
+
+export { useGetTasks, useGetTaskById, useUpdateTaskOneColumnById, useDeleteBoard };
