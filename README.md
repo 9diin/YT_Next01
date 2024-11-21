@@ -63,3 +63,8 @@
 4. Supabase 연동하기
 
     - `#4-connect-supabase` branch를 참고하세요.
+
+5. Init Page 기능 개발하기
+    - Add New Page 버튼 클릭 시, TASK 생성 및 Supabase 연동하기
+    - TASK 생성 후, USER의 TODO-BOARD 텍스트 아래의 데이터 조회하기 (feat. useGetAllTask 훅 사용)
+    - `#5-dev-init` branch를 참고하세요.
