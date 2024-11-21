@@ -3,7 +3,7 @@
 import { useParams, useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 import { useToast } from "@/hooks/use-toast";
-import { useGetTasks } from "@/hooks/api/read/use-task";
+import { useGetTasks } from "@/hooks/api/supabase/use-task";
 /** UI 컴포넌트 */
 import { Button, SearchBar } from "@/components/ui";
 import { Task } from "@/types";

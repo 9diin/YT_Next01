@@ -7,10 +7,10 @@ export interface Task {
 }
 
 export interface Board {
-    id: number;
+    id: string | number;
     isCompleted: boolean;
     title: string;
-    startDate: Date;
-    endDate: string;
+    startDate: Date | string;
+    endDate: Date | string;
     content: string;
 }

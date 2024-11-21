@@ -34,6 +34,7 @@
 -   SASS/SCSS 설치: `npm i sass`
 -   React 마크다운 에디터 설치: `npm i @uiw/react-markdown-editor`
 -   Supabase 연동을 위한 라이브러리 설치: `npm install @supabase/supabase-js`
+-   고유한 문자열 식별자 생성기 nanoId 설치: `npm install nanoid`
 
 2. 프로젝트 구조
 
@@ -66,5 +67,5 @@
 
 5. Init Page 기능 개발하기
     - Add New Page 버튼 클릭 시, TASK 생성 및 Supabase 연동하기
-    - TASK 생성 후, USER의 TODO-BOARD 텍스트 아래의 데이터 조회하기 (feat. useGetAllTask 훅 사용)
+    - TASK 생성 후, USER의 TODO-BOARD 텍스트 아래의 데이터 조회하기 (feat. useGetTasks 훅 사용)
     - `#5-dev-init` branch를 참고하세요.
