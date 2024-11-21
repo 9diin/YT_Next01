@@ -1,5 +1,9 @@
 "use client";
 
+import { useParams, useRouter } from "next/navigation";
+import { supabase } from "@/lib/supabase";
+import { useToast } from "@/hooks/use-toast";
+/** Ui 컴포넌트 */
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui";
 
 interface Props {
@@ -7,6 +11,26 @@ interface Props {
 }
 
 function AlertPopup({ children }: Props) {
+    const { id } = useParams();
+    const router = useRouter();
+    const { toast } = useToast();
+
+    const handleDeleteTask = async () => {
+        try {
+            const { status } = await supabase.from("todos").delete().eq("id", Number(id));
+
+            if (status === 204) {
+                toast({
+                    title: "선택한 TODO-LIST가 삭제되었습니다.",
+                    description: "새로운 TASK가 생기시면 언제든 추가해주세요!",
+                });
+                router.push("/");
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
     return (
         <AlertDialog>
             <AlertDialogTrigger asChild>{children}</AlertDialogTrigger>
@@ -20,7 +44,9 @@ function AlertPopup({ children }: Props) {
                 </AlertDialogHeader>
                 <AlertDialogFooter>
                     <AlertDialogCancel>취소</AlertDialogCancel>
-                    <AlertDialogAction className="bg-red-600 hover:bg-rose-600">삭제</AlertDialogAction>
+                    <AlertDialogAction className="bg-red-600 hover:bg-rose-600" onClick={handleDeleteTask}>
+                        삭제
+                    </AlertDialogAction>
                 </AlertDialogFooter>
             </AlertDialogContent>
         </AlertDialog>
