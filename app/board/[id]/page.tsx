@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
 import { supabase } from "@/lib/supabase";
-import { useCreateBoard, useGetTaskById } from "@/hooks/api";
+import { useGetTasks, useGetTaskById, useCreateBoard } from "@/hooks/api";
 import { useToast } from "@/hooks/use-toast";
 import { nanoid } from "nanoid";
 /** UI 컴포넌트 */
@@ -18,6 +18,7 @@ import { Board } from "@/types";
 
 function BoardUniquePage() {
     const { id } = useParams();
+    const { getTasks } = useGetTasks();
     const { task, getTaskById } = useGetTaskById(Number(id));
     const { toast } = useToast();
 
@@ -68,7 +69,8 @@ function BoardUniquePage() {
                 });
 
                 // 서버에서 데이터 갱신 후 상태 업데이트
-                getTaskById();
+                // getTaskById();
+                getTasks();
             }
         } catch (error) {
             toast({
