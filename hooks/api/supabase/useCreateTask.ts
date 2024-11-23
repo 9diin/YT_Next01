@@ -1,6 +1,6 @@
 import { useRouter } from "next/navigation";
 import { useAtom } from "jotai";
-import { tasksAtom } from "@/stores";
+import { tasksAtom } from "@/stores/atoms";
 import { supabase } from "@/lib/supabase";
 import { useToast } from "@/hooks/use-toast";
 

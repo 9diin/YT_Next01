@@ -1,4 +1,7 @@
-import { useGetTaskById, useDeleteBoard } from "@/hooks/api/supabase/use-task";
+"use client";
+
+import { useParams } from "next/navigation";
+import { useDeleteBoard } from "@/hooks/api";
 /** UI 컴포넌트 */
 import { MarkdownEditorDialog } from "@/components/common";
 import { Button, Card, Checkbox, LabelDatePicker, Separator } from "@/components/ui";
@@ -11,28 +14,9 @@ interface Props {
 }
 
 function BoardCard({ board }: Props) {
+    const { id } = useParams();
     /** TODO-LIST의 개별 TODO-BOARD 삭제 */
-    const handleDeleteBoard = async (selected: string | number) => {
-        // try {
-        //     const { data } = await supabase.from("todos").select("*").eq("id", Number(id));
-        //     if (data !== null) {
-        //         const { status } = await supabase
-        //             .from("todos")
-        //             .update({
-        //                 boards: data[0].boards.filter((board: Board) => board.boardId !== selected),
-        //             })
-        //             .eq("id", Number(id));
-        //         if (status === 204) {
-        //             toast({
-        //                 title: "선택하신 TODO-BOARD가 삭제되었습니다.",
-        //                 description: "새로운 TODO-BOARD를 생성하려면 'Add New Board' 버튼을 눌러주세요!",
-        //             });
-        //         }
-        //     }
-        // } catch (error) {
-        //     console.log(error);
-        // }
-    };
+    const handleDeleteBoard = useDeleteBoard(Number(id), board.id);
 
     return (
         <Card className="w-full flex flex-col items-center p-5">
@@ -58,7 +42,7 @@ function BoardCard({ board }: Props) {
                     <Button variant={"ghost"} className="font-normal text-[#6D6D6D]">
                         Duplicate
                     </Button>
-                    <Button variant={"ghost"} className="font-normal text-rose-600 hover:text-rose-600 hover:bg-red-50" onClick={() => handleDeleteBoard}>
+                    <Button variant={"ghost"} className="font-normal text-rose-600 hover:text-rose-600 hover:bg-red-50" onClick={handleDeleteBoard}>
                         Delete
                     </Button>
                 </div>

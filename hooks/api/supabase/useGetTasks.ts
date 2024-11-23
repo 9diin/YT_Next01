@@ -1,6 +1,7 @@
+import { useEffect } from "react";
 /** 전역에서 관리할 상태 값 조회 */
 import { useAtom } from "jotai";
-import { tasksAtom } from "@/stores";
+import { tasksAtom } from "@/stores/atoms";
 /** Supabase 호출 */
 import { supabase } from "@/lib/supabase";
 /** Toast UI 사용 */
@@ -37,6 +38,14 @@ function useGetTasks() {
             console.error("API 호출 중 오류 발생:", error);
         }
     };
+
+    // tasks 상태가 빈 배열일 경우 한 번만 API 호출
+    useEffect(() => {
+        if (tasks.length === 0) {
+            getTasks(); // tasks가 없으면 한 번 호출
+        }
+    }, [tasks, setTasks]); // tasks가 변경될 때마다 호출 (빈 배열일 경우에만 호출)
+
     return { tasks, getTasks };
 }
 

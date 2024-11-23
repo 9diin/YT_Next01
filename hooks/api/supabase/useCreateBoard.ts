@@ -1,7 +1,8 @@
 import { useAtom } from "jotai";
-import { taskAtom } from "@/stores";
+import { taskAtom } from "@/stores/atoms";
 import { supabase } from "@/lib/supabase";
 import { useToast } from "@/hooks/use-toast";
+import { useGetTaskById } from "./useGetTaskById";
 
 function useCreateBoard() {
     const { toast } = useToast();
@@ -16,7 +17,7 @@ function useCreateBoard() {
                 .eq("id", Number(id))
                 .select();
 
-            if (data !== null && status === 204) {
+            if (data !== null && status === 200) {
                 toast({
                     title: "새로운 TODO-BOARD가 생성되었습니다.",
                     description: "생성한 TODO-BOARD를 예쁘게 꾸며주세요.",

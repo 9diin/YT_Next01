@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useParams } from "next/navigation";
 import { useCreateBoard, useGetTaskById } from "@/hooks/api";
 import { nanoid } from "nanoid";
@@ -16,9 +16,9 @@ import { Board } from "@/types";
 
 function BoardUniquePage() {
     const { id } = useParams();
-    const { task, getTaskById } = useGetTaskById();
-    const createBoard = useCreateBoard();
+    const task = useGetTaskById(Number(id));
     const [boards, setBoards] = useState<Board[]>(task?.boards || []);
+    const createBoard = useCreateBoard();
 
     /** Add New Board 버튼 클릭 시 */
     const handleAddBoard = () => {
@@ -30,18 +30,11 @@ function BoardUniquePage() {
             endDate: "",
             content: "",
         };
-
-        /** 새로운 보드 추가 */
         const newBoards = [...boards, newBoard];
 
-        /** 상태 업데이트 후 createBoard 호출 */
         setBoards(newBoards);
-        createBoard(Number(id), "boards", newBoards); // 새 boards 상태를 바로 사용
+        createBoard(Number(id), "boards", newBoards);
     };
-
-    useEffect(() => {
-        getTaskById(Number(id));
-    }, [getTaskById]);
 
     return (
         <>
@@ -78,7 +71,7 @@ function BoardUniquePage() {
                 </div>
             </div>
             <div className={styles.body}>
-                {task?.boards.length === 0 ? (
+                {!task?.boards.length ? (
                     <div className={styles.body__noData}>
                         {/* Add New Board 버튼 클릭으로 인한 Board 데이터가 없을 경우 */}
                         <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">There is no board yet.</h3>
