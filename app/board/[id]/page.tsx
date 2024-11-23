@@ -16,7 +16,7 @@ import { Board } from "@/types";
 
 function BoardUniquePage() {
     const { id } = useParams();
-    const task = useGetTaskById(Number(id));
+    const { task } = useGetTaskById(Number(id));
     const [boards, setBoards] = useState<Board[]>(task?.boards || []);
     const createBoard = useCreateBoard();
 

@@ -38,7 +38,7 @@ function useGetTaskById(id: number) {
         if (id) getTaskById();
     }, [id]);
 
-    return task;
+    return { task, getTaskById };
 }
 
 export { useGetTaskById };
