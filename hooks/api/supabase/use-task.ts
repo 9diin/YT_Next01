@@ -11,7 +11,7 @@ function useGetTasks() {
     const [tasks, setTasks] = useState<Task[]>([]);
 
     const fetchApi = async () => {
-        const { data, status, error } = await supabase.from("todos").select("*");
+        const { data, status, error } = await supabase.from("tasks").select("*");
 
         if (data !== null && status === 200) setTasks(data);
         if (error)
@@ -35,7 +35,7 @@ function useGetTaskById(id: string | number) {
     const { toast } = useToast();
 
     const fetchApi = async () => {
-        const { data, status, error } = await supabase.from("todos").select("*").eq("id", id);
+        const { data, status, error } = await supabase.from("tasks").select("*").eq("id", id);
 
         if (data !== null && status === 200) setTask(data[0]);
         if (error)
@@ -60,7 +60,7 @@ function useUpdateTaskOneColumnById(id: number, column: string, value: any) {
     const fetchApi = async () => {
         try {
             const { data, status, error } = await supabase
-                .from("todos")
+                .from("tasks")
                 .update({ [column]: value })
                 .eq("id", Number(id));
 
@@ -98,7 +98,7 @@ function useDeleteBoard(id: number, column: string) {
 
             if (task !== undefined) {
                 const { status } = await supabase
-                    .from("todos")
+                    .from("tasks")
                     .update({
                         [column]: task.boards.filter((board: Board) => board.id !== id),
                     })

@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useParams } from "next/navigation";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useGetTaskById } from "@/hooks/api";
 import { nanoid } from "nanoid";
 import { supabase } from "@/lib/supabase";
@@ -36,30 +36,29 @@ function BoardUniquePage() {
         updateTaskOneColumnById(Number(id), "boards", boards);
     };
 
-    const updateTaskOneColumnById = async (id: number, column: string, value: any) => {
+    const updateTaskOneColumnById = async (id: number, column: string, newValue: any) => {
         try {
-            const { data, status, error } = await supabase
-                .from("todos")
-                .update({ [column]: value })
-                .eq("id", Number(id));
+            const { data, status } = await supabase
+                .from("tasks")
+                .update({ [column]: newValue })
+                .eq("id", Number(id))
+                .select();
 
+            console.log(data);
             if (data !== null && status === 204) {
                 toast({
                     title: "새로운 TODO-BOARD가 생성되었습니다.",
                     description: "생성한 TODO-BOARD를 예쁘게 꾸며주세요.",
                 });
-            }
-
-            if (error) {
-                console.error(error);
-                toast({
-                    variant: "destructive",
-                    title: "에러가 발생했습니다.",
-                    description: "개발자 도구창을 확인하세요.",
-                });
+                // setBoards(data.board);
             }
         } catch (error) {
             console.log(error);
+            toast({
+                variant: "destructive",
+                title: "에러가 발생했습니다.",
+                description: "알 수 없는 에러가 발생했습니다. 문의사항을 남겨주세요!",
+            });
         }
     };
 
@@ -98,7 +97,14 @@ function BoardUniquePage() {
                 </div>
             </div>
             <div className={styles.body}>
-                {boards.length === 0 ? (
+                {boards.length !== 0 ? (
+                    <div className={styles.body__isData}>
+                        {/* Add New Board 버튼 클릭으로 인한 Board 데이터가 있을 경우 */}
+                        {boards.map((board: Board) => {
+                            return <BoardCard key={board.id} board={board} />;
+                        })}
+                    </div>
+                ) : (
                     <div className={styles.body__noData}>
                         {/* Add New Board 버튼 클릭으로 인한 Board 데이터가 없을 경우 */}
                         <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">There is no board yet.</h3>
@@ -106,13 +112,6 @@ function BoardUniquePage() {
                         <button>
                             <Image src="/assets/images/button.svg" width={74} height={74} alt="rounded-button" />
                         </button>
-                    </div>
-                ) : (
-                    <div className={styles.body__isData}>
-                        {/* Add New Board 버튼 클릭으로 인한 Board 데이터가 있을 경우 */}
-                        {boards.map((board: Board) => {
-                            return <BoardCard key={board.id} board={board} />;
-                        })}
                     </div>
                 )}
             </div>

@@ -18,7 +18,7 @@ function AsideSection() {
     const handleCreateTask = async () => {
         try {
             const { data, status } = await supabase
-                .from("todos")
+                .from("tasks")
                 .insert([
                     {
                         title: "",
