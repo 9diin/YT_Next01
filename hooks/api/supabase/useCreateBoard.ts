@@ -1,18 +1,22 @@
+import { useParams } from "next/navigation";
 import { useAtom } from "jotai";
 import { taskAtom } from "@/stores/atoms";
 import { supabase } from "@/lib/supabase";
+import { useGetTaskById } from "./useGetTaskById";
 import { useToast } from "@/hooks/use-toast";
 
 function useCreateBoard() {
+    const { id } = useParams();
+    const { getTaskById } = useGetTaskById(Number(id));
     const { toast } = useToast();
-    const [_, setTask] = useAtom(taskAtom);
+    const [task, setTask] = useAtom(taskAtom);
 
-    const createBoard = async (id: number, column: string, newValue: any) => {
+    const createBoard = async (taskId: number, column: string, newValue: any) => {
         try {
             const { data, status } = await supabase
                 .from("tasks")
                 .update({ [column]: newValue })
-                .eq("id", Number(id))
+                .eq("id", taskId)
                 .select();
 
             if (data !== null && status === 200) {
@@ -21,6 +25,7 @@ function useCreateBoard() {
                     description: "생성한 TODO-BOARD를 예쁘게 꾸며주세요.",
                 });
                 setTask(data[0]);
+                getTaskById();
             }
         } catch (error) {
             toast({
@@ -31,6 +36,7 @@ function useCreateBoard() {
             console.error("API 호출 중 오류 발생:", error);
         }
     };
+
     return createBoard;
 }
 

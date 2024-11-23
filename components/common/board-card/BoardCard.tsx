@@ -22,9 +22,9 @@ function BoardCard({ board }: Props) {
         <Card className="w-full flex flex-col items-center p-5">
             {/* 게시물 카드 제목 영역*/}
             <div className="w-full flex items-center justify-between mb-4">
-                <div className="flex items-center justify-start gap-2">
-                    <Checkbox className="h-5 w-5" />
-                    <input type="text" placeholder="제목 없음." className="text-xl outline-none bg-transparent" disabled={true} />
+                <div className="w-full flex items-center justify-start gap-2">
+                    <Checkbox className="h-5 w-5" checked={board.isCompleted} />
+                    <input type="text" placeholder="등록된 TODO-BOARD 제목이 없습니다." value={board.title} disabled={true} className="w-full text-xl outline-none bg-transparent" />
                 </div>
                 <Button variant={"ghost"} size={"icon"}>
                     <ChevronUp className="text-[#6d6d6d]" />
@@ -34,8 +34,8 @@ function BoardCard({ board }: Props) {
             <div className="w-full flex items-center justify-between">
                 {/* 캘린더 박스 */}
                 <div className="flex items-center gap-5">
-                    <LabelDatePicker label={"From"} isReadOnly={true} />
-                    <LabelDatePicker label={"To"} isReadOnly={true} />
+                    <LabelDatePicker label={"From"} value={board.startDate} isReadOnly={true} />
+                    <LabelDatePicker label={"To"} value={board.endDate} isReadOnly={true} />
                 </div>
                 {/* 버튼 박스 */}
                 <div className="flex items-center">
@@ -49,9 +49,9 @@ function BoardCard({ board }: Props) {
             </div>
             <Separator className="my-3" />
             {/* Add Contents 버튼 영역 */}
-            <MarkdownEditorDialog>
+            <MarkdownEditorDialog board={board}>
                 <Button variant={"ghost"} className="font-normal text-[#6D6D6D]">
-                    Add Contents
+                    {board.title ? "Update Contents" : "Add Contents"}
                 </Button>
             </MarkdownEditorDialog>
         </Card>
