@@ -1,16 +1,18 @@
 import { useAtom } from "jotai";
 import { taskAtom } from "@/stores/atoms";
 import { supabase } from "@/lib/supabase";
+import { useGetTaskById } from "@/hooks/api";
 import { useToast } from "@/hooks/use-toast";
 import { Board } from "@/types";
 
 function useDeleteBoard(taskId: number, boardId: string | number) {
     const { toast } = useToast();
     const [task, setTask] = useAtom(taskAtom);
+    const { getTaskById } = useGetTaskById(taskId);
 
     const deleleBoard = async () => {
         try {
-            const { data, status, error } = await supabase
+            const { status, error } = await supabase
                 .from("tasks")
                 .update({
                     boards: task?.boards.filter((board: Board) => board.id !== boardId),
@@ -22,6 +24,7 @@ function useDeleteBoard(taskId: number, boardId: string | number) {
                     title: "선택한 TODO-LIST가 삭제되었습니다.",
                     description: "새로운 TASK가 생기시면 언제든 추가해주세요!",
                 });
+                getTaskById();
             }
             if (error) {
                 toast({

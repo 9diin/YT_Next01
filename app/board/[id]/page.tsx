@@ -16,7 +16,7 @@ import { Board } from "@/types";
 
 function BoardUniquePage() {
     const { id } = useParams();
-    const task = useGetTaskById(Number(id));
+    const { task } = useGetTaskById(Number(id));
     const [boards, setBoards] = useState<Board[]>(task?.boards || []);
     const createBoard = useCreateBoard();
 
@@ -76,7 +76,7 @@ function BoardUniquePage() {
                         {/* Add New Board 버튼 클릭으로 인한 Board 데이터가 없을 경우 */}
                         <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">There is no board yet.</h3>
                         <small className="text-sm font-medium leading-none text-[#6D6D6D] mt-3 mb-7">Click the button and start flashing!</small>
-                        <button>
+                        <button onClick={handleAddBoard}>
                             <Image src="/assets/images/button.svg" width={74} height={74} alt="rounded-button" />
                         </button>
                     </div>
