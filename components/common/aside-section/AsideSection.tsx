@@ -1,18 +1,25 @@
 "use client";
 
+import { useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
+import { useAtom } from "jotai";
+import { tasksAtom } from "@/stores/atoms";
 import { useGetTasks, useCreateTask } from "@/hooks/api";
 /** UI 컴포넌트 */
 import { Button, SearchBar } from "@/components/ui";
 import { Task } from "@/types";
 
 function AsideSection() {
-    const router = useRouter();
     const { id } = useParams();
+    const router = useRouter();
     const { tasks, getTasks } = useGetTasks();
 
     /** Add New Page 버튼을 클릭하였을 때, TODO-LIST 생성 */
     const handleCreateTask = useCreateTask();
+
+    useEffect(() => {
+        getTasks();
+    }, [id]);
 
     return (
         <aside className="page__aside">

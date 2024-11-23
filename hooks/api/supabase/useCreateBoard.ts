@@ -2,14 +2,12 @@ import { useAtom } from "jotai";
 import { taskAtom } from "@/stores/atoms";
 import { supabase } from "@/lib/supabase";
 import { useToast } from "@/hooks/use-toast";
-import { useGetTaskById } from "./useGetTaskById";
 
 function useCreateBoard() {
     const { toast } = useToast();
     const [_, setTask] = useAtom(taskAtom);
 
     const createBoard = async (id: number, column: string, newValue: any) => {
-        console.log(newValue);
         try {
             const { data, status } = await supabase
                 .from("tasks")

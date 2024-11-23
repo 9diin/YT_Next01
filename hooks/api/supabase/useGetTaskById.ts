@@ -13,9 +13,6 @@ function useGetTaskById(id: number) {
         try {
             const { data, status, error } = await supabase.from("tasks").select("*").eq("id", id);
 
-            console.log(data);
-            console.log(status);
-
             if (data && status === 200) setTask(data[0]);
             if (error) {
                 toast({
@@ -38,7 +35,7 @@ function useGetTaskById(id: number) {
         if (id) getTaskById();
     }, [id]);
 
-    return { task, getTaskById };
+    return task;
 }
 
 export { useGetTaskById };

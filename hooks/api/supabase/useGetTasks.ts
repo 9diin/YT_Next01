@@ -39,13 +39,6 @@ function useGetTasks() {
         }
     };
 
-    // tasks 상태가 빈 배열일 경우 한 번만 API 호출
-    useEffect(() => {
-        if (tasks.length === 0) {
-            getTasks(); // tasks가 없으면 한 번 호출
-        }
-    }, [tasks, setTasks]); // tasks가 변경될 때마다 호출 (빈 배열일 경우에만 호출)
-
     return { tasks, getTasks };
 }
 
