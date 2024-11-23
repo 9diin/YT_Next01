@@ -2,7 +2,7 @@ import { useGetTaskById, useDeleteBoard } from "@/hooks/api/supabase/use-task";
 /** UI 컴포넌트 */
 import { MarkdownEditorDialog } from "@/components/common";
 import { Button, Card, Checkbox, LabelDatePicker, Separator } from "@/components/ui";
-import { ChevronUp } from "lucide-react";
+import { ChevronUp } from "@/public/assets/icons";
 /** 타입 */
 import { Board } from "@/types";
 
