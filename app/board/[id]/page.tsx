@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useState, useEffect } from "react";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 import { useGetTasks, useGetTaskById, useCreateBoard } from "@/hooks/api";
 import { useToast } from "@/hooks/use-toast";
@@ -18,8 +18,9 @@ import { Board } from "@/types";
 
 function BoardUniquePage() {
     const { id } = useParams();
+    const router = useRouter();
     const { getTasks } = useGetTasks();
-    const { task, getTaskById } = useGetTaskById(Number(id));
+    const { task } = useGetTaskById(Number(id));
     const { toast } = useToast();
 
     // 상태 초기화
@@ -69,7 +70,6 @@ function BoardUniquePage() {
                 });
 
                 // 서버에서 데이터 갱신 후 상태 업데이트
-                // getTaskById();
                 getTasks();
             }
         } catch (error) {
@@ -102,7 +102,7 @@ function BoardUniquePage() {
         <>
             <div className={styles.header}>
                 <div className={styles[`header__btn-box`]}>
-                    <Button variant={"outline"} size={"icon"}>
+                    <Button variant={"outline"} size={"icon"} onClick={() => router.push("/")}>
                         <ChevronLeft />
                     </Button>
                     <div className="flex items-center gap-2">
