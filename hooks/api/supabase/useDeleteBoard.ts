@@ -7,7 +7,7 @@ import { Board } from "@/types";
 
 function useDeleteBoard(taskId: number, boardId: string | number) {
     const { toast } = useToast();
-    const [task, setTask] = useAtom(taskAtom);
+    const [task, _] = useAtom(taskAtom);
     const { getTaskById } = useGetTaskById(taskId);
 
     const deleleBoard = async () => {

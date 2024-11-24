@@ -9,7 +9,7 @@ function useCreateBoard() {
     const { id } = useParams();
     const { getTaskById } = useGetTaskById(Number(id));
     const { toast } = useToast();
-    const [task, setTask] = useAtom(taskAtom);
+    const [_, setTask] = useAtom(taskAtom);
 
     const createBoard = async (taskId: number, column: string, newValue: any) => {
         try {
