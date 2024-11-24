@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 /** 전역에서 관리할 상태 값 조회 */
 import { useAtom } from "jotai";
 import { tasksAtom } from "@/stores/atoms";
