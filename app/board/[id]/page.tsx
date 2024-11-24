@@ -68,7 +68,6 @@ function BoardUniquePage() {
                     title: "새로운 TODO-BOARD가 생성되었습니다.",
                     description: "생성한 TODO-BOARD를 예쁘게 꾸며주세요.",
                 });
-
                 // 서버에서 데이터 갱신 후 상태 업데이트
                 getTasks();
             }
