@@ -3,6 +3,9 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { supabase } from "@/lib/supabase";
+import { toast } from "@/hooks/use-toast";
+/** UI 컴포넌트 */
 import { Button, Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter, Label, Input } from "@/components/ui";
 import { Eye, EyeOff } from "@/public/assets/icons";
 
@@ -23,6 +26,37 @@ function SignupPage() {
         setPhoneNumber(formattedValue);
     };
 
+    /** 세션(Session)이란 무엇인가?
+     * 세션이란, 클라이언트로부터 오는 일련의 요청을 하나의 상태로 보고 그 상태를 일정하게 유지하는 기술
+     * 클라이언트가 웹 서버에 접속해있는 상태가 하나의 단위
+     * 세션은 웹 서버에 웹 컨테이너의 상태를 유지하기 위한 정보를 저장합니다.
+     * 브라우저를 닫거나 서버에서 세션을 삭제하면 세션이 삭제됩니다.
+     */
+    async function signUpNewUser() {
+        const { data, error } = await supabase.auth.signUp({
+            email: email,
+            password: password,
+            options: {
+                emailRedirectTo: "http://localhost:3000",
+            },
+        });
+
+        if (data) {
+            toast({
+                title: "회원가입을 성공하였습니다.",
+                description: "이메일 인증을 완료해주세요.",
+            });
+        }
+
+        if (error) {
+            toast({
+                variant: "destructive",
+                title: "회원가입 중 에러가 발생했습니다.",
+                description: `Supabase 오류: ${error.message || "알 수 없는 오류"}`,
+            });
+            return;
+        }
+    }
     return (
         <div className="page">
             <div className="page__container">
@@ -73,12 +107,14 @@ function SignupPage() {
                                 <Button variant={"outline"} className="w-full" onClick={() => router.push("/")}>
                                     이전
                                 </Button>
-                                <Button className="w-full text-white bg-[#E79057] hover:bg-[#E26F24] hover:ring-1 hover:ring-[#E26F24] hover:ring-offset-1 active:bg-[#D5753D] hover:shadow-lg">회원가입</Button>
+                                <Button className="w-full text-white bg-[#E79057] hover:bg-[#E26F24] hover:ring-1 hover:ring-[#E26F24] hover:ring-offset-1 active:bg-[#D5753D] hover:shadow-lg" onClick={signUpNewUser}>
+                                    회원가입
+                                </Button>
                             </div>
                         </div>
                         <div className="mt-4 text-center text-sm">
                             이미 계정이 있으신가요?{" "}
-                            <Link href="/login" className="underline">
+                            <Link href="/" className="underline">
                                 로그인
                             </Link>
                         </div>
