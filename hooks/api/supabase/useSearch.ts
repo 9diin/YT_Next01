@@ -1,19 +1,20 @@
 "use client";
 
-import { toast } from "@/hooks/use-toast";
 import { supabase } from "@/lib/supabase";
-import { taskAtom } from "@/stores/atoms";
+import { toast } from "@/hooks/use-toast";
 import { useAtom } from "jotai";
-import { useEffect } from "react";
+import { tasksAtom } from "@/stores/atoms";
 
-function useGetTaskById(taskId: number) {
-    const [task, setTask] = useAtom(taskAtom);
-
-    const getTaskById = async () => {
+function useSearch() {
+    const [, setTasks] = useAtom(tasksAtom);
+    const search = async (searchTerm: string) => {
         try {
-            const { data, status, error } = await supabase.from("tasks").select("*").eq("id", taskId);
+            const { data, status, error } = await supabase.from("tasks").select("*").ilike("title", `%${searchTerm}%`);
 
-            if (data && status === 200) setTask(data[0]);
+            if (data && status === 200) {
+                setTasks(data); // Jotai의 tasksAtom 상태를 업데이트
+            }
+
             if (error) {
                 toast({
                     variant: "destructive",
@@ -31,12 +32,7 @@ function useGetTaskById(taskId: number) {
             });
         }
     };
-
-    useEffect(() => {
-        if (taskId) getTaskById();
-    }, [taskId]);
-
-    return { task, getTaskById };
+    return { search };
 }
 
-export { useGetTaskById };
+export { useSearch };

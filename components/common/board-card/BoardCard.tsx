@@ -1,10 +1,10 @@
 "use client";
 
 import { useParams } from "next/navigation";
-import { useDeleteBoard } from "@/hooks/api";
 /** UI 컴포넌트 */
 import { MarkdownEditorDialog } from "@/components/common";
 import { Button, Card, Checkbox, LabelDatePicker, Separator } from "@/components/ui";
+import { useDeleteBoard } from "@/hooks/api";
 import { ChevronUp } from "@/public/assets/icons";
 /** 타입 */
 import { Board } from "@/types";
@@ -15,7 +15,7 @@ interface Props {
 
 function BoardCard({ board }: Props) {
     const { id } = useParams();
-    /** TODO-LIST의 개별 TODO-BOARD 삭제 */
+    /** TASK의 개별 TODO-BOARD 삭제(TODO-BOARD 1건 삭제) */
     const handleDeleteBoard = useDeleteBoard(Number(id), board.id);
 
     return (
@@ -24,7 +24,7 @@ function BoardCard({ board }: Props) {
             <div className="w-full flex items-center justify-between mb-4">
                 <div className="w-full flex items-center justify-start gap-2">
                     <Checkbox className="h-5 w-5" checked={board.isCompleted} />
-                    <input type="text" placeholder="등록된 TODO-BOARD 제목이 없습니다." value={board.title} disabled={true} className="w-full text-xl outline-none bg-transparent" />
+                    <input type="text" placeholder="등록된 제목이 없습니다." value={board.title} className="w-full text-xl outline-none bg-transparent" disabled={true} />
                 </div>
                 <Button variant={"ghost"} size={"icon"}>
                     <ChevronUp className="text-[#6d6d6d]" />
@@ -34,8 +34,8 @@ function BoardCard({ board }: Props) {
             <div className="w-full flex items-center justify-between">
                 {/* 캘린더 박스 */}
                 <div className="flex items-center gap-5">
-                    <LabelDatePicker label={"From"} value={board.startDate} isReadOnly={true} />
-                    <LabelDatePicker label={"To"} value={board.endDate} isReadOnly={true} />
+                    <LabelDatePicker label={"From"} isReadOnly={true} value={board.startDate} />
+                    <LabelDatePicker label={"To"} isReadOnly={true} value={board.endDate} />
                 </div>
                 {/* 버튼 박스 */}
                 <div className="flex items-center">

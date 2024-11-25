@@ -1,10 +1,8 @@
 import type { Metadata } from "next";
-import { Provider } from "jotai";
 import { Toaster } from "@/components/ui/toast/toaster";
-/** UI 컴포넌트 */
-import { AsideSection } from "@/components/common";
+/** 폰트 */
+import { FONT_NOTOSANSKR } from "@/public/assets/fonts";
 /** 스타일 */
-import { FONT_NOTOSANSKR } from "@/public/assets/fonts/index";
 import "@/public/styles/globals.css";
 import "@/public/styles/main.scss";
 
@@ -21,13 +19,8 @@ export default function RootLayout({
     return (
         <html lang="ko">
             <body className={FONT_NOTOSANSKR.className}>
-                <Provider>
-                    <div className="page">
-                        <AsideSection />
-                        <main className="page__main">{children}</main>
-                    </div>
-                    <Toaster />
-                </Provider>
+                {children}
+                <Toaster />
             </body>
         </html>
     );

@@ -1,16 +1,15 @@
+import { supabase } from "@/lib/supabase";
+import { toast } from "@/hooks/use-toast";
+import { useGetTaskById } from "@/hooks/api";
 import { useAtom } from "jotai";
 import { taskAtom } from "@/stores/atoms";
-import { supabase } from "@/lib/supabase";
-import { useGetTaskById } from "@/hooks/api";
-import { useToast } from "@/hooks/use-toast";
 import { Board } from "@/types";
 
-function useDeleteBoard(taskId: number, boardId: string | number) {
-    const { toast } = useToast();
-    const [task, _] = useAtom(taskAtom);
+function useDeleteBoard(taskId: number, boardId: string) {
+    const [task] = useAtom(taskAtom);
     const { getTaskById } = useGetTaskById(taskId);
 
-    const deleleBoard = async () => {
+    const deleteBoard = async () => {
         try {
             const { status, error } = await supabase
                 .from("tasks")
@@ -21,9 +20,10 @@ function useDeleteBoard(taskId: number, boardId: string | number) {
 
             if (status === 204) {
                 toast({
-                    title: "선택한 TODO-LIST가 삭제되었습니다.",
-                    description: "새로운 TASK가 생기시면 언제든 추가해주세요!",
+                    title: "선택한 TODO-BOARD가 삭제되었습니다.",
+                    description: "새로운 할 일이 생기면 TODO-BOARD를 생성해주세요!",
                 });
+                /** task 갱신 */
                 getTaskById();
             }
             if (error) {
@@ -35,15 +35,15 @@ function useDeleteBoard(taskId: number, boardId: string | number) {
             }
         } catch (error) {
             /** 네트워크 오류나 예기치 않은 에러를 잡기 위해 catch 구문 사용 */
+            console.error(error);
             toast({
                 variant: "destructive",
                 title: "네트워크 오류",
                 description: "서버와 연결할 수 없습니다. 다시 시도해주세요!",
             });
-            console.error("API 호출 중 오류 발생:", error);
         }
     };
-    return deleleBoard;
+    return deleteBoard;
 }
 
 export { useDeleteBoard };

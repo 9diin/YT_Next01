@@ -2,7 +2,7 @@
 
 import { useParams } from "next/navigation";
 import { useDeleteTask } from "@/hooks/api";
-/** Ui 컴포넌트 */
+/** UI 컴포넌트 */
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui";
 
 interface Props {
@@ -26,7 +26,7 @@ function AlertPopup({ children }: Props) {
                 </AlertDialogHeader>
                 <AlertDialogFooter>
                     <AlertDialogCancel>취소</AlertDialogCancel>
-                    <AlertDialogAction className="bg-red-600 hover:bg-rose-600" onClick={() => handleDeleteTask(Number(id))}>
+                    <AlertDialogAction onClick={() => handleDeleteTask(Number(id))} className="bg-red-600 hover:bg-rose-600">
                         삭제
                     </AlertDialogAction>
                 </AlertDialogFooter>
