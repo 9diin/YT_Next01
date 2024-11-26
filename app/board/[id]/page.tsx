@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
-import { supabase } from "@/lib/supabase";
+import { createClient } from "@/lib/supabase/client";
 import { useCreateBoard, useGetTaskById, useGetTasks } from "@/hooks/api";
 import { toast } from "@/hooks/use-toast";
 import { nanoid } from "nanoid";
@@ -19,6 +19,7 @@ import { Board } from "@/types";
 function BoardDetailPage() {
     const { id } = useParams();
     const router = useRouter();
+    const supabase = createClient();
     const { getTasks } = useGetTasks();
     const { task } = useGetTaskById(Number(id)); // 특정 id 값에 따른 TASK 데이터
     const createBoard = useCreateBoard();

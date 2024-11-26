@@ -1,11 +1,12 @@
 "use client";
 
 import { toast } from "@/hooks/use-toast";
-import { supabase } from "@/lib/supabase";
+import { createClient } from "@/lib/supabase/client";
 import { taskAtom } from "@/stores/atoms";
 import { useAtom } from "jotai";
 
 function useCreateBoard() {
+    const supabase = createClient();
     const [, setTask] = useAtom(taskAtom);
 
     const createBoard = async (taskId: number, column: string, newValue: any) => {

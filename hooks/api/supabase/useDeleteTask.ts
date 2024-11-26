@@ -1,11 +1,12 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { supabase } from "@/lib/supabase";
+import { createClient } from "@/lib/supabase/client";
 import { toast } from "@/hooks/use-toast";
 
 function useDeleteTask() {
     const router = useRouter();
+    const supabase = createClient();
 
     const deleteTask = async (taskId: number) => {
         try {

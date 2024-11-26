@@ -14,8 +14,8 @@ import { Button, Card, CardContent, CardDescription, CardFooter, CardHeader, Car
 import { Eye, EyeOff } from "@/public/assets/icons";
 
 function LoginPage() {
-    const supabase = createClient();
     const router = useRouter();
+    const supabase = createClient();
     const [user, setUser] = useAtom(userAtom);
     const { checkEmail } = useEmailCheck();
     /** 회원가입에 필요한 상태 값 */
@@ -62,14 +62,19 @@ function LoginPage() {
                     description: "자유롭게 TASK 관리를 해주세요!",
                 });
                 console.log(data);
-                router.push("/board"); // 로그인 페이지로 이동
-                // Jotai의 user에 관련된 상태 값을 업데이트
-                setUser({
+
+                // 쿠키에 user 정보를 저장
+                const userData = {
                     id: data.user?.id || "",
                     email: data.user?.email || "",
                     phone: data.user?.phone || "",
                     imgUrl: "/assets/images/profile.jpg",
-                });
+                };
+                document.cookie = `user=${JSON.stringify(userData)}; path=/; max-age=3600`; // 1시간 동안 유효
+
+                // Jotai의 user에 관련된 상태 값을 업데이트
+                setUser(userData);
+                router.push("/board"); // 로그인 페이지로 이동
             }
         } catch (error) {
             /** 네트워크 오류나 예기치 않은 에러를 잡기 위해 catch 구문 사용 */
@@ -112,7 +117,14 @@ function LoginPage() {
                                     <p className="ml-auto inline-block text-sm underline cursor-pointer">비밀번호를 잊으셨나요?</p>
                                 </FindPasswordPopup>
                             </div>
-                            <Input id="password" type={showPassword ? "text" : "password"} placeholder="비밀번호를 입력하세요." required value={password} onChange={(event) => setPassword(event.target.value)} />
+                            <Input
+                                id="password"
+                                type={showPassword ? "text" : "password"}
+                                placeholder="비밀번호를 입력하세요."
+                                required
+                                value={password}
+                                onChange={(event) => setPassword(event.target.value)}
+                            />
                             <Button size={"icon"} className="absolute top-[38px] right-2 -translate-y-1/4 bg-transparent hover:bg-transparent" onClick={togglePassword}>
                                 {showPassword ? <EyeOff className="h-5 w-5 text-muted-foreground" /> : <Eye className="h-5 w-5 text-muted-foreground" />}
                             </Button>
@@ -127,7 +139,10 @@ function LoginPage() {
                         </div>
                     </div>
                     <CardFooter className="flex flex-col mt-6">
-                        <Button className="w-full text-white bg-[#E79057] hover:bg-[#E26F24] hover:ring-1 hover:ring-[#E26F24] hover:ring-offset-1 active:bg-[#D5753D] hover:shadow-lg" onClick={handleLogin}>
+                        <Button
+                            className="w-full text-white bg-[#E79057] hover:bg-[#E26F24] hover:ring-1 hover:ring-[#E26F24] hover:ring-offset-1 active:bg-[#D5753D] hover:shadow-lg"
+                            onClick={handleLogin}
+                        >
                             로그인
                         </Button>
                         <div className="mt-4 text-center text-sm">
