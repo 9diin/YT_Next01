@@ -1,9 +1,27 @@
+export { Avatar, AvatarImage, AvatarFallback } from "./avatar/avatar";
 export { AlertDialog, AlertDialogPortal, AlertDialogOverlay, AlertDialogTrigger, AlertDialogContent, AlertDialogHeader, AlertDialogFooter, AlertDialogTitle, AlertDialogDescription, AlertDialogAction, AlertDialogCancel } from "./dialog/alert-dialog";
 export { Button, buttonVariants } from "./button/button";
 export { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent } from "./card/card";
 export { Calendar } from "./calendar/calendar";
 export { Checkbox } from "./checkbox/checkbox";
 export { Dialog, DialogPortal, DialogOverlay, DialogClose, DialogTrigger, DialogContent, DialogHeader, DialogFooter, DialogTitle, DialogDescription } from "./dialog/dialog";
+export {
+    DropdownMenu,
+    DropdownMenuTrigger,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuCheckboxItem,
+    DropdownMenuRadioItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuShortcut,
+    DropdownMenuGroup,
+    DropdownMenuPortal,
+    DropdownMenuSub,
+    DropdownMenuSubContent,
+    DropdownMenuSubTrigger,
+    DropdownMenuRadioGroup,
+} from "./dropdown-menu/dropdown-menu";
 export { Input } from "./input/input";
 export { LabelDatePicker } from "./date-picker/LabelDatePicker";
 export { Label } from "./label/label";
